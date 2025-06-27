@@ -151,4 +151,4 @@ int main() {
     printf("\n✅ Passed %d / %d test cases.\n", passed, SAMPLE_COUNT);
     return 0;
 }
-
+/*✅ Passed 5000 / 5000 test cases. -- output*/
