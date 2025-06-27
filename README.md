@@ -5,7 +5,7 @@ A modern, pointer-centric implementation of **Bubble Sort** in C designed for de
 
 ---
 
-## ✨ Highlights
+##  Highlights
 
 - 📌 **Two sorting variants**:
   - ✅ Recursive Bubble Sort (pointer-based)
