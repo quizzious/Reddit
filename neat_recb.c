@@ -1,7 +1,7 @@
-#include <cstdio>
-#include <cstdlib>
-#include <climits>
-#include <cstdbool>
+#include <stdio>
+#include <stdlib>
+#include <limits>
+#include <stdbool>
 
 typedef int** solptr;
 typedef int* arrptr[];
