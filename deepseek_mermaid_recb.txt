@@ -1,0 +1,52 @@
+flowchart TD
+    Start --> CheckSwapFlag{Is swap flag true?}
+    CheckSwapFlag -- Yes --> ReturnSoln1[Return soln]
+    CheckSwapFlag -- No --> CheckPhaseEnd{Is phase >= size?}
+    CheckPhaseEnd -- Yes --> SetBaseFlag[Set base flag and return soln]
+    CheckPhaseEnd -- No --> CheckBubblePos{Is bubble > 0?}
+    
+    CheckBubblePos -- No --> TravBubbleEqual{Is trav == bubble - 2?}
+    TravBubbleEqual -- Yes --> Recurse1[Recurse with bubble - 1, same trav]
+    TravBubbleEqual -- No --> Recurse2[Recurse with bubble - 1, trav = bubble - 2]
+
+    CheckBubblePos -- Yes --> TravValid{Is trav > -1?}
+    TravValid -- No --> FallbackCheck{phase != 0 and trav != bubble - 2?}
+    FallbackCheck -- No --> FinalCheck{Is trav == bubble - 2?}
+    FinalCheck -- Yes --> Recurse9[Recurse bubble - 1, same trav]
+    FinalCheck -- No --> Recurse10[Recurse bubble - 1, bubble - 2]
+
+    TravValid -- Yes --> Condition1{Is value at trav+1 less than at bubble - 1?}
+    Condition1 -- No --> FallbackCheck
+    Condition1 -- Yes --> IsPhaseZero{Is phase == 0?}
+    IsPhaseZero -- Yes --> Recurse3[Recurse bubble - 1, same trav]
+    IsPhaseZero -- No --> Cond2{Is value at trav+1 >= previous soln?}
+
+    Cond2 -- No --> Cond4{Is value at bubble - 1 >= previous soln?}
+    Cond4 -- Yes --> Cond5{Is ref trav equal to bubble - 1?}
+    Cond5 -- Yes --> Recurse7[Recurse bubble, trav - 1]
+    Cond5 -- No --> Recurse8[Recurse bubble - 1, trav = bubble - 2]
+
+    Cond2 -- Yes --> Cond3{Is ref trav != trav + 1?}
+    Cond3 -- Yes --> Recurse4[Recurse bubble - 1, same trav]
+    Cond3 -- No --> Cond6{Is value at bubble - 1 > previous soln?}
+    Cond6 -- Yes --> Recurse5[Recurse bubble - 1, trav = bubble - 2]
+    Cond6 -- No --> Recurse6[Recurse bubble - 1, same trav]
+
+    FallbackCheck -- Yes --> Cond7{Is value at bubble - 1 <= value at ref trav?}
+    Cond7 -- No --> ExtraBranch1{Is value at bubble - 1 >= previous soln?}
+    ExtraBranch1 -- Yes --> ExtraCond1{Is ref trav == bubble - 1?}
+    ExtraCond1 -- Yes --> Recurse17[Recurse bubble - 1, same trav]
+    ExtraCond1 -- No --> Recurse18[Recurse bubble - 1, bubble - 2]
+
+    Cond7 -- Yes --> Cond8{Is value at bubble - 1 == value at ref trav?}
+    Cond8 -- No --> Cond9{Is value at trav + 1 >= previous soln?}
+    Cond9 -- Yes --> Cond10{Is ref trav >= trav + 1?}
+    Cond10 -- Yes --> Recurse14[Recurse bubble - 1, same trav]
+    Cond10 -- No --> Recurse15[Recurse bubble - 1, same trav]
+    Cond9 -- No --> Recurse16[Recurse bubble, trav - 1]
+
+    Cond8 -- Yes --> Cond11{Is value at bubble - 1 >= previous soln?}
+    Cond11 -- Yes --> Cond12{Is ref trav >= bubble - 1?}
+    Cond12 -- Yes --> Recurse11[Recurse bubble - 1, same trav]
+    Cond12 -- No --> Recurse12[Recurse bubble - 1, bubble - 2]
+    Cond11 -- No --> Recurse13[Recurse bubble - 1, same trav]
