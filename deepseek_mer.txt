@@ -1,0 +1,84 @@
+flowchart TD
+    Start([Start]) --> CheckSwap{"*swap_flag == true?"}
+    CheckSwap -->|Yes| ReturnSoln1["Return soln"]
+    CheckSwap -->|No| CheckPhase{"phase >= *size?"}
+    CheckPhase -->|Yes| SetBaseFlag["*base_flag = true"] --> ReturnSoln2["Return soln"]
+    CheckPhase -->|No| Begin[["Begin soln[phase] assignment"]]
+    
+    Begin --> BubbleCheck{"bubble > 0?"}
+    BubbleCheck -->|Yes| TravCheck{"trav > -1?"}
+    TravCheck -->|Yes| LessCheck{"arr[trav+1] < arr[bubble-1]?"}
+    LessCheck -->|Yes| PhaseZero{"phase == 0?"}
+    PhaseZero -->|Yes| Rec1["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    PhaseZero -->|No| CheckSoln1{"arr[trav+1] >= *soln[phase-1]?"}
+    CheckSoln1 -->|Yes| RefCheck1{"*ref_trav != trav+1?"}
+    RefCheck1 -->|Yes| Rec2["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    RefCheck1 -->|No| BubbleGtSoln{"arr[bubble-1] > *soln[phase-1]?"}
+    BubbleGtSoln -->|Yes| Rec3["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, bubble-2, size, soln, swap_flag, base_flag)"]
+    BubbleGtSoln -->|No| Rec4["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    CheckSoln1 -->|No| BubbleGteSoln{"arr[bubble-1] >= *soln[phase-1]?"}
+    BubbleGteSoln -->|Yes| RefTravEq{"*ref_trav == bubble-1?"}
+    RefTravEq -->|Yes| Rec5["soln = rec_bubblesort(arr, phase, bubble, ref_trav, trav-1, size, soln, swap_flag, base_flag)"]
+    RefTravEq -->|No| Rec6["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, bubble-2, size, soln, swap_flag, base_flag)"]
+    BubbleGteSoln -->|No| Rec7["soln = rec_bubblesort(arr, phase, bubble, ref_trav, trav-1, size, soln, swap_flag, base_flag)"]
+    
+    LessCheck -->|No| PhaseTravCond{"phase != 0 && trav != bubble-2?"}
+    PhaseTravCond -->|Yes| BubbleLteRef{"arr[bubble-1] <= arr[*ref_trav]?"}
+    BubbleLteRef -->|Yes| BubbleEqRef{"arr[bubble-1] == arr[*ref_trav]?"}
+    BubbleEqRef -->|Yes| BubbleGteSoln2{"arr[bubble-1] >= *soln[phase-1]?"}
+    BubbleGteSoln2 -->|Yes| RefGteBubble{"*ref_trav >= bubble-1?"}
+    RefGteBubble -->|Yes| Rec8["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    RefGteBubble -->|No| Rec9["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, bubble-2, size, soln, swap_flag, base_flag)"]
+    BubbleGteSoln2 -->|No| Rec10["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    BubbleEqRef -->|No| TravNextGteSoln{"arr[trav+1] >= *soln[phase-1]?"}
+    TravNextGteSoln -->|Yes| RefGteTravPlus{"*ref_trav >= trav+1?"}
+    RefGteTravPlus -->|Yes| Rec11["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    RefGteTravPlus -->|No| Rec12["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    TravNextGteSoln -->|No| Rec13["soln = rec_bubblesort(arr, phase, bubble, ref_trav, trav-1, size, soln, swap_flag, base_flag)"]
+    BubbleLteRef -->|No| BubbleGteSoln3{"arr[bubble-1] >= *soln[phase-1]?"}
+    BubbleGteSoln3 -->|Yes| RefEqBubble{"*ref_trav == bubble-1?"}
+    RefEqBubble -->|Yes| Rec14["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    RefEqBubble -->|No| Rec15["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, bubble-2, size, soln, swap_flag, base_flag)"]
+    BubbleGteSoln3 -->|No| TravNextGteSoln2{"arr[trav+1] >= *soln[phase-1]?"}
+    TravNextGteSoln2 -->|Yes| RefEqTravPlus{"*ref_trav == trav+1?"}
+    RefEqTravPlus -->|Yes| Rec16["soln = rec_bubblesort(arr, phase, bubble, ref_trav, trav-1, size, soln, swap_flag, base_flag)"]
+    RefEqTravPlus -->|No| Rec17["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    TravNextGteSoln2 -->|No| Rec18["soln = rec_bubblesort(arr, phase, bubble, ref_trav, trav-1, size, soln, swap_flag, base_flag)"]
+    PhaseTravCond -->|No| TravEqCond{"trav == bubble-2?"}
+    TravEqCond -->|Yes| Rec19["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, trav, size, soln, swap_flag, base_flag)"]
+    TravEqCond -->|No| Rec20["soln = rec_bubblesort(arr, phase, bubble-1, ref_trav, bubble-2, size, soln, swap_flag, base_flag)"]
+    
+    BubbleCheck -->|No| Assign1["soln[phase] = &arr[trav+1]"]
+    TravCheck -->|No| Assign2["*swap_flag = true\nsoln[phase] = &arr[trav+1]"]
+    
+    Rec1 --> AfterConditionals
+    Rec2 --> AfterConditionals
+    Rec3 --> AfterConditionals
+    Rec4 --> AfterConditionals
+    Rec5 --> AfterConditionals
+    Rec6 --> AfterConditionals
+    Rec7 --> AfterConditionals
+    Rec8 --> AfterConditionals
+    Rec9 --> AfterConditionals
+    Rec10 --> AfterConditionals
+    Rec11 --> AfterConditionals
+    Rec12 --> AfterConditionals
+    Rec13 --> AfterConditionals
+    Rec14 --> AfterConditionals
+    Rec15 --> AfterConditionals
+    Rec16 --> AfterConditionals
+    Rec17 --> AfterConditionals
+    Rec18 --> AfterConditionals
+    Rec19 --> AfterConditionals
+    Rec20 --> AfterConditionals
+    Assign1 --> AfterConditionals
+    Assign2 --> AfterConditionals
+    
+    AfterConditionals --> CheckBubbleZero{"bubble == 0?"}
+    CheckBubbleZero -->|Yes| SetRefTrav["*ref_trav = trav+1"]
+    CheckBubbleZero -->|No| CheckBaseFlag{"*base_flag == true?"}
+    SetRefTrav --> CheckBaseFlag
+    CheckBaseFlag -->|Yes| SetSwapTrue["*swap_flag = true"] --> ReturnSoln3["Return soln"]
+    CheckBaseFlag -->|No| CheckSwapFalse{"*swap_flag == false?"}
+    CheckSwapFalse -->|Yes| RecNext["Return rec_bubblesort(arr, phase+1, *size-1, ref_trav, *size-2, size, soln, swap_flag, base_flag)"]
+    CheckSwapFalse -->|No| ReturnSoln4["Return soln"]
